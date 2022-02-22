@@ -12,14 +12,14 @@ with open(os.path.join(current_directory, 'README.md'), "r") as readme:
     package_description = readme.read()
 
 setup(
-    name="zebra-statstream",
+    name="statstream",
     version="0.1.0",
-    author="Zebra.com",
-    author_email="scorbett@thezebra.com",
+    author="Sean Corbett",
+    author_email="sean.corbett@umconnect.edu",
     description="A library for writing consistent CLI interfaces.",
     long_description=package_description,
     long_description_content_type="text/markdown",
-    url="https://gitlab.com/thezebra/libraries/zebra-statstream",
+    url="https://github.com/scorbettUM/statstream",
     packages=find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
