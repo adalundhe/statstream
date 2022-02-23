@@ -1,5 +1,5 @@
 from .stats.stream_field import StreamField
-from zebra_statstream.models import (
+from statstream.models import (
     Event,
     Query
 )

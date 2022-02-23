@@ -1,5 +1,5 @@
-from zebra_statstream.streaming import StatStreamGroup
-from zebra_statstream.models import (
+from statstream.streaming import StatStreamGroup
+from statstream.models import (
     StreamConfig,
     Event,
     Query

@@ -1,5 +1,5 @@
-from zebra_statstream.streaming import StatStream
-from zebra_statstream.models import Event, Query
+from statstream.streaming import StatStream
+from statstream.models import Event, Query
 
 stream = StatStream(fields={
   'field_one': {
