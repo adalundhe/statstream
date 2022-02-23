@@ -3,8 +3,6 @@ from setuptools import (
     setup,
     find_packages
 )
-from distutils.sysconfig import get_python_lib
-from setuptools.command.install import install
 
 current_directory = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,8 +10,8 @@ with open(os.path.join(current_directory, 'README.md'), "r") as readme:
     package_description = readme.read()
 
 setup(
-    name="statstream",
-    version="0.1.0",
+    name="statstream-py",
+    version="0.1.2",
     author="Sean Corbett",
     author_email="sean.corbett@umconnect.edu",
     description="A library for writing consistent CLI interfaces.",
@@ -27,6 +25,7 @@ setup(
         "Operating System :: OS Independent"
     ],
     install_requires=[
+        'easy-logger-py',
         'tdigest'
     ],
     python_requires='>=3.6'
