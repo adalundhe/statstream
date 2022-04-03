@@ -76,6 +76,32 @@ class StreamField:
 
         await self.counts.get('TOTAL').update()
 
+    async def update_metadata(self, metadata):
+        if metadata.get('event_tags'):
+                self.tags.update(
+                    {
+                        tag.get('name'): tag.get('value') for tag in metadata.get('event_tags')
+                    }
+                )
+        
+        self.metadata.update(metadata)
+
+    async def update_stat(self, stat, value):
+        await self.stats[stat].update(value)
+    
+    async def update_count(self, count, value):
+
+        if self.counts.get(count) is None:
+            self.counts[count] = Count(bin_name=count)
+
+        await self.counts[count].update(value)
+    
+    async def update_quantile(self, quantile, value):
+        if self.quantiles.get(quantile) is None:
+            self.quantiles[quantile] = Quantile(quantile=quantile)
+
+        await self.quantiles[quantile].update(value)
+
     async def get_metadata(self):
         self.metadata['event_tags'] = [{tag_name: tag_value} for tag_name, tag_value in self.tags.items()]
         return self.metadata

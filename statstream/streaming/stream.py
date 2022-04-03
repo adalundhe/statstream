@@ -1,3 +1,4 @@
+from numpy import quantile
 from .stats.stream_field import StreamField
 from statstream.models import (
     Event,
@@ -80,33 +81,25 @@ class StatStream:
 
         return parital_summary
 
-    async def merge_stream(self, stream):
-        for field in stream.fields():
-            if self.stream_fields.get(field) is None:
-                self.stream_fields[field] = stream.stream_fields.get(field)
-            else:
-                stream_field = stream.stream_fields.get(field)
-                self.stream_fields[field].metadata.update(stream_field.metadata)
+    async def merge_stream(self, aggregate_event, field_name=None):
+        metadata = aggregate_event.get('metadata', {})
+        stats = aggregate_event.get('stats', {})
+        counts = aggregate_event.get('counts', {})
+        quantiles = aggregate_event.get('quantiles', {})
 
-                for stat in stream_field.stats:
-                    stat_value = stream_field.stats[stat].get()
-                    self.stream_fields[field].stats[stat].update(stat_value)
+        if self.stream_fields.get(field_name) is None:
+            self.stream_fields[field_name] = StreamField()
 
-                for quantile in stream_field.quantiles:
-                    quantile_value = stream_field.quantiles[quantile].get()
-                    self.stream_fields[field].quantiles[quantile].update(quantile_value)
+        await self.stream_fields[field_name].update_metadata(metadata)
+        
+        for stat, stat_value in stats.items():
+            await self.stream_fields[field_name].update_stat(stat, stat_value)
 
-                for count in stream_field.counts:
-                    if self.stream_fields[field].counts.get(count) is None:
-                        self.stream_fields[field].counts[count] = stream_field.counts.get(count)
-                    else:
-                        count_value = stream_field.counts[count].get()
-                        self.stream_fields[field].counts[count].update(amount=count_value)
+        for count, count_value in counts.items():
+            await self.stream_fields[field_name].update_count(count, count_value)
 
-
-                
-
-                    
+        for quantile, quantile_value in quantiles.items():
             
+            quantile_key = int(quantile.replace('th_quantile', ''))
 
-
+            await self.stream_fields[field_name].update_quantile(quantile_key, quantile_value)
