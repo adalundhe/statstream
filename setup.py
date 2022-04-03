@@ -11,7 +11,7 @@ with open(os.path.join(current_directory, 'README.md'), "r") as readme:
 
 setup(
     name="statstream-py",
-    version="0.1.5",
+    version="0.1.6",
     author="Sean Corbett",
     author_email="sean.corbett@umconnect.edu",
     description="A library for writing consistent CLI interfaces.",
